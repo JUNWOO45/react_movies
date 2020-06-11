@@ -24,10 +24,18 @@ class App extends Component {
     return ( 
       <>
         <div>
-          { isLoading ? 'Loading... ' : movies.map(movie => {
-            return <Movie title={movie.title} key={movie.id} id={movie.id} summary={movie.summary} poster={movie.medium_cover_image} year={movie.year} />
-            // return <Movie movie={movie}/>
-          }) }
+          { 
+            isLoading ? 
+            <div className="loader">
+              <span className="loader__text">Loading...</span>
+            </div> : 
+            <div className="movies">
+              { movies.map(movie => {
+                  return <Movie title={movie.title} key={movie.id} id={movie.id} summary={movie.summary} poster={movie.medium_cover_image} year={movie.year} genres={movie.genres} />
+                }) 
+              }
+            </div>
+          }
         </div>
       </>
     );
