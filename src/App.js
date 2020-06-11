@@ -1,51 +1,37 @@
-import React from 'react';
-import PropTypes, { number } from 'prop-types';
+import React, { Component } from 'react';
+import axios from 'axios';
+import Movie from './Movie';
 
-const foodILike = [
-  {
-    id: 1,
-    name: 'apple',
-    rating: 3.5
-  },
-  {
-    id: 2,
-    name: 'melon',
-    rating: 4.2
-  },
-  {
-    id: 3,
-    name: 'strawberry',
-    rating: 2.8
-  },
-  {
-    id: 4,
-    name: 'orange',
-    rating: 5
-  },
-];
+class App extends Component {
+  state = {
+    isLoading: true,
+    movies: []
+  };
 
-function Food({ name, rating }) {
-  return (
-    <div>{ name } { rating }/5.0</div>
-  )
+  getMovies = async () => {
+    const {data: {data : { movies }}} = await axios.get('https://yts-proxy.now.sh/list_movies.json?sort_by=rating') 
+
+    console.log(movies);
+    this.setState({ movies, isLoading: false });
+  }
+
+  componentDidMount() {
+    this.getMovies();
+  }
+
+  render() { 
+    const { isLoading, movies } = this.state;
+    return ( 
+      <>
+        <div>
+          { isLoading ? 'Loading... ' : movies.map(movie => {
+            return <Movie title={movie.title} key={movie.id} id={movie.id} summary={movie.summary} poster={movie.medium_cover_image} year={movie.year} />
+            // return <Movie movie={movie}/>
+          }) }
+        </div>
+      </>
+    );
+  }
 }
-
-Food.propTypes = {
-  id: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
-  rating: PropTypes.number.isRequired
-}
-
-function renderFood({ id, name, rating }) {
-  return <Food name={name} key={id} id={id} rating={rating} />
-}
-
-function App() {
-  return (
-    <div className="App">
-      {foodILike.map(renderFood)}
-    </div>
-  );
-}
-
+ 
 export default App;
