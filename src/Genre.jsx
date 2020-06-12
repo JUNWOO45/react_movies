@@ -9,7 +9,7 @@ class Genre extends Component {
     const { genre } = this.props;
     return ( 
       <>
-        <li>
+        <li className="genres__genre">
           { genre }
         </li>
       </>

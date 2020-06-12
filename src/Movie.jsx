@@ -8,26 +8,22 @@ class Movie extends Component {
     this.state = {  }
   }
   render() {
-    const {genres, title, summary, poster, year} = this.props; 
+    const { genres, title, summary, poster, year } = this.props; 
     return ( 
       <div className="movie">
         <img src={poster} alt={title} title={title}/>
-        <ul>
-          { 
-            genres.map(genre => {
-              return (
-                <li>
-                  <Genre genre={genre}/>
-                </li>
-              );
-            })
-          }
-        </ul>
         
         <div className="movie__data">
-          <h1 className="movie__title" style={{backgroundColor: 'silver'}}>{title}</h1>
           <div className="movie__year">{year}</div>
-          <div className="movie__summary">{summary}</div>
+          <ul className="genres">
+            { 
+              genres.map(genre => {
+                return <Genre genre={genre} key={`${genre}${title}`} />;
+              })
+            }
+          </ul>
+          <h1 className="movie__title" style={{backgroundColor: 'silver'}}>{title}</h1>
+          <div className="movie__summary">{summary.slice(0, 290)+'....'}</div>
         </div>
       </div>
     );
@@ -40,6 +36,7 @@ Movie.propTypes = {
   summary: PropTypes.string.isRequired,
   poster: PropTypes.string.isRequired,
   year: PropTypes.number.isRequired,
+  genre: PropTypes.arrayOf(PropTypes.string).isRequired
 };
  
 export default Movie;
